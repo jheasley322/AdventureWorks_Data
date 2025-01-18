@@ -51,3 +51,85 @@
     )
     -- Select CalendarDetails to populate the Master Calendar
     SELECT * FROM CalendarDetails;
+
+-- adding Cost Breaks
+    -- Add CostBreakID to adventureworks.Product
+    ALTER TABLE "adventureworks"."Product"
+    ADD COLUMN CostBreakID INT;
+
+    -- Create the CostBreaks table
+    CREATE TABLE "adventureworks"."CostBreaks" (
+        CostBreakID INT PRIMARY KEY,
+        CostBreak VARCHAR(50),
+        PriceFamily VARCHAR(50),
+        ItemClass VARCHAR(50)
+    );
+
+    -- Populate the CostBreaks table
+    INSERT INTO "adventureworks"."CostBreaks" (CostBreakID, CostBreak, PriceFamily, ItemClass)
+    VALUES
+        (1, '0 to 25', 'Less than 100', 'Regular'),
+        (2, '25 to 50', 'Less than 100', 'Regular'),
+        (3, '50 to 100', 'Less than 100', 'Regular'),
+        (4, '100 to 300', '100 to 500', 'Regular'),
+        (5, '300 to 500', '100 to 500', 'Regular'),
+        (6, '500 to 750', 'Over 500', 'Premium'),
+        (7, '750 to 1000', 'Over 500', 'Premium'),
+        (8, 'over 1000', 'Over 500', 'Premium');
+
+    -- Update CostBreakID in adventureworks.Product based on Standard Cost
+    UPDATE "adventureworks"."Product"
+    SET CostBreakID = CASE
+        WHEN CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 25 THEN 1
+        WHEN CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 25 
+            AND CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 50 THEN 2
+        WHEN CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 50 
+            AND CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 100 THEN 3
+        WHEN CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 100 
+            AND CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 300 THEN 4
+        WHEN CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 300 
+            AND CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 500 THEN 5
+        WHEN CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 500 
+            AND CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 750 THEN 6
+        WHEN CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 750 
+            AND CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 1000 THEN 7
+        WHEN CAST(REGEXP_REPLACE("Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 1000 THEN 8
+        ELSE NULL
+    END;
+
+    -- Add Foreign Key Constraint to Product Table
+    ALTER TABLE "adventureworks"."Product"
+    ADD CONSTRAINT FK_Product_CostBreak
+    FOREIGN KEY (CostBreakID)
+    REFERENCES "adventureworks"."CostBreaks" (CostBreakID);
+
+    -- Create a Trigger Function to Populate CostBreakID with Cleaned Standard Cost
+    CREATE OR REPLACE FUNCTION populate_cost_break_id()
+    RETURNS TRIGGER AS $$
+    BEGIN
+    NEW.CostBreakID := CASE
+        WHEN CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 25 THEN 1
+        WHEN CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 25 
+            AND CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 50 THEN 2
+        WHEN CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 50 
+            AND CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 100 THEN 3
+        WHEN CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 100 
+            AND CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 300 THEN 4
+        WHEN CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 300 
+            AND CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 500 THEN 5
+        WHEN CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 500 
+            AND CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 750 THEN 6
+        WHEN CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 750 
+            AND CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) <= 1000 THEN 7
+        WHEN CAST(REGEXP_REPLACE(NEW."Standard Cost", '[^0-9.]', '', 'g') AS NUMERIC) > 1000 THEN 8
+        ELSE NULL
+    END;
+    RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+    -- Create a Trigger to Automate CostBreakID Population
+    CREATE TRIGGER trg_populate_cost_break_id
+    BEFORE INSERT OR UPDATE ON "adventureworks"."Product"
+    FOR EACH ROW
+    EXECUTE FUNCTION populate_cost_break_id();
