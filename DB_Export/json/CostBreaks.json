@@ -1,0 +1,50 @@
+[
+    {
+        "costbreakid":1,
+        "costbreak":"0 to 25",
+        "pricefamily":"Less than 100",
+        "itemclass":"Regular"
+    },
+    {
+        "costbreakid":2,
+        "costbreak":"25 to 50",
+        "pricefamily":"Less than 100",
+        "itemclass":"Regular"
+    },
+    {
+        "costbreakid":3,
+        "costbreak":"50 to 100",
+        "pricefamily":"Less than 100",
+        "itemclass":"Regular"
+    },
+    {
+        "costbreakid":4,
+        "costbreak":"100 to 300",
+        "pricefamily":"100 to 500",
+        "itemclass":"Regular"
+    },
+    {
+        "costbreakid":5,
+        "costbreak":"300 to 500",
+        "pricefamily":"100 to 500",
+        "itemclass":"Regular"
+    },
+    {
+        "costbreakid":6,
+        "costbreak":"500 to 750",
+        "pricefamily":"Over 500",
+        "itemclass":"Premium"
+    },
+    {
+        "costbreakid":7,
+        "costbreak":"750 to 1000",
+        "pricefamily":"Over 500",
+        "itemclass":"Premium"
+    },
+    {
+        "costbreakid":8,
+        "costbreak":"over 1000",
+        "pricefamily":"Over 500",
+        "itemclass":"Premium"
+    }
+]

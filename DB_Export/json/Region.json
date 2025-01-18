@@ -1,0 +1,62 @@
+[
+    {
+        "SalesTerritoryKey":"1",
+        "Region":"Northwest",
+        "Country":"United States",
+        "Group":"North America"
+    },
+    {
+        "SalesTerritoryKey":"2",
+        "Region":"Northeast",
+        "Country":"United States",
+        "Group":"North America"
+    },
+    {
+        "SalesTerritoryKey":"3",
+        "Region":"Central",
+        "Country":"United States",
+        "Group":"North America"
+    },
+    {
+        "SalesTerritoryKey":"4",
+        "Region":"Southwest",
+        "Country":"United States",
+        "Group":"North America"
+    },
+    {
+        "SalesTerritoryKey":"5",
+        "Region":"Southeast",
+        "Country":"United States",
+        "Group":"North America"
+    },
+    {
+        "SalesTerritoryKey":"6",
+        "Region":"Canada",
+        "Country":"Canada",
+        "Group":"North America"
+    },
+    {
+        "SalesTerritoryKey":"7",
+        "Region":"France",
+        "Country":"France",
+        "Group":"Europe"
+    },
+    {
+        "SalesTerritoryKey":"8",
+        "Region":"Germany",
+        "Country":"Germany",
+        "Group":"Europe"
+    },
+    {
+        "SalesTerritoryKey":"9",
+        "Region":"Australia",
+        "Country":"Australia",
+        "Group":"Pacific"
+    },
+    {
+        "SalesTerritoryKey":"10",
+        "Region":"United Kingdom",
+        "Country":"United Kingdom",
+        "Group":"Europe"
+    }
+]

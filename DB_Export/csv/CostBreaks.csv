@@ -1,0 +1,9 @@
+costbreakid	costbreak	pricefamily	itemclass
+1	0 to 25	Less than 100	Regular
+2	25 to 50	Less than 100	Regular
+3	50 to 100	Less than 100	Regular
+4	100 to 300	100 to 500	Regular
+5	300 to 500	100 to 500	Regular
+6	500 to 750	Over 500	Premium
+7	750 to 1000	Over 500	Premium
+8	over 1000	Over 500	Premium

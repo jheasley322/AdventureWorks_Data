@@ -6,8 +6,8 @@ database:
   port: database_port_goes_here
 
 paths:
-  csv_directory: csv/directory/path/goes/here
-
+  csv_directory: /csv/directory/path/goes/here
+  output_directory: /export/output/directory/goes/here
 csv_settings:
   delimiter: "\t" # or "," or "|" or whatever your delimiter is
   
