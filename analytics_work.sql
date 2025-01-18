@@ -46,3 +46,9 @@
         "TotalSales" = COALESCE("TotalSales", 0), -- Replace NULL in TotalSales with 0
         "TotalMargin" = COALESCE("TotalMargin", 0), -- Replace NULL in TotalMargin with 0
         "ExceedsTarget" = COALESCE("ExceedsTarget", FALSE); -- Replace NULL in ExceedsTarget with FALSE
+
+-- geocoding work
+    ALTER TABLE "adventureworks"."Region"
+    ADD COLUMN IF NOT EXISTS "Latitude" DOUBLE PRECISION,
+    ADD COLUMN IF NOT EXISTS "Longitude" DOUBLE PRECISION,
+    ADD COLUMN IF NOT EXISTS "CityShape" GEOMETRY(POLYGON, 4326);
